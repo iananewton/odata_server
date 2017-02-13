@@ -64,6 +64,8 @@ class ODataController < ApplicationController
   end
   
   def metadata
+    cors_set_access_control_headers
+    
     respond_to do |format|
       format.xml  # metadata.xml.builder
     end
