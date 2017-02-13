@@ -23,7 +23,7 @@ class ODataController < ApplicationController
   before_filter :parse_resource_path_and_query_string!,  :only => [:resource]
   before_filter :set_request_format!,                    :only => [:resource]
   #### COORS ###
-  before_filter :cors_preflight_check
+ 
   after_filter :cors_set_access_control_headers
 
   def cors_set_access_control_headers
@@ -33,20 +33,6 @@ class ODataController < ApplicationController
     headers['Access-Control-Max-Age'] = "1728000"
   end
 
-  def cors_preflight_check
-    if request.method == 'OPTIONS'
-      headers['Access-Control-Allow-Origin'] = '*'
-      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-      headers['Access-Control-Max-Age'] = '1728000'
-
-      render :text => '', :content_type => 'text/plain'
-    end
-  end
-
-  def options
-    render json: { success: true }
-  end
 #######################
   
   %w{service metadata resource}.each do |method_name|
@@ -64,7 +50,6 @@ class ODataController < ApplicationController
   end
   
   def metadata
-    cors_set_access_control_headers
     
     respond_to do |format|
       format.xml  # metadata.xml.builder
