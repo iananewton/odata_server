@@ -308,13 +308,13 @@ class ODataController < ApplicationController
         get_selected_properties_for(query, entity_type).each do |property|
           unless %w{__deferred __metadata}.include?(property.name.to_s)
             ### DateTime conversion
-            if property.return_type == "Edm.DateTime"
-              secs = (result.send(property.name.to_sym).to_i)*1000
-              _json[property.name.to_s] = "/Date(#{secs})/"
+            #if property.return_type == "Edm.DateTime"
+            #  secs = (result.send(property.name.to_sym).to_i)*1000
+            #  _json[property.name.to_s] = "/Date(#{secs})/"
             #########
-            else
+            #else
               _json[property.name.to_s] = property.value_for(result)
-            end
+            #end
           else
             # TODO: raise JSONException (property with reserved name)
           end
